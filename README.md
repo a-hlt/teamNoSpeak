@@ -1,3 +1,5 @@
+L'IA a été utilisée pour la réalisation partielle du TP et pour l'écriture du README
+
 # TP 1 — Docker Cloud : Tableau de Bord TeamSpeak
 
 Projet d'infrastructure virtualisée sous Docker simulant un cloud privé hébergeant un **serveur de jeux TeamSpeak 3**, son dashboard de contrôle (frontend React) et son API de gestion (backend Python/Flask).
