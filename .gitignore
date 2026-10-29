@@ -1,0 +1,19 @@
+# Dependencies
+node_modules/
+.npm/
+
+# Build & Bundler output
+dist/
+build/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+report.html
+
+# Environment & OS
+.env
+.DS_Store
+Thumbs.db

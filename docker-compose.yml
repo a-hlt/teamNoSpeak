@@ -1,0 +1,87 @@
+services:
+  backend:
+    build: ./backend
+    container_name: backend_app
+    environment:
+      - PORT=5000
+    stop_signal: SIGTERM
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 256M
+    healthcheck:
+      test: ["CMD-SHELL", "wget --spider -q http://127.0.0.1:5000/api/health || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+
+  frontend:
+    build: ./frontend
+    container_name: frontend_app
+    environment:
+      - PORT=3000
+    stop_signal: SIGTERM
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 256M
+    healthcheck:
+      test: ["CMD-SHELL", "wget --spider -q http://127.0.0.1:3000/ || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  webserver:
+    build: ./webserver
+    container_name: webserver_app
+    ports:
+      - "8080:80"
+      - "9987:9987/udp"
+      - "10011:10011"
+      - "30033:30033"
+    stop_signal: SIGTERM
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 128M
+    depends_on:
+      backend:
+        condition: service_healthy
+      frontend:
+        condition: service_healthy
+
+  lint:
+    build: ./lint
+    container_name: lint_runner
+    profiles:
+      - ci
+    volumes:
+      - ./backend:/code/backend:ro
+      - ./frontend:/code/frontend:ro
+    stop_signal: SIGTERM
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 128M
+
+  tests:
+    build: ./tests
+    container_name: tests_runner
+    profiles:
+      - ci
+    environment:
+      - API_URL=http://backend:5000
+      - REPORT=0
+    depends_on:
+      backend:
+        condition: service_healthy
+    stop_signal: SIGTERM
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 128M

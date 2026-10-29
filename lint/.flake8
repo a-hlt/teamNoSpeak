@@ -1,0 +1,16 @@
+[flake8]
+# Longueur de ligne max : 100 (PEP8 recommande 79, on assouplit pour du code réel)
+max-line-length = 100
+
+# Dossiers à ignorer lors du lint
+exclude =
+    __pycache__,
+    .git,
+    *.egg-info,
+    dist,
+    build
+
+# Codes d'erreur ignorés :
+# W503 : saut de ligne avant opérateur binaire (conflit avec W504, on choisit W504)
+# E501 : géré via max-line-length ci-dessus
+extend-ignore = W503

@@ -1,0 +1,9 @@
+services:
+  webserver:
+    ports: !reset []
+    deploy:
+      replicas: 2
+      resources:
+        limits:
+          cpus: '0.65'
+          memory: 256M
